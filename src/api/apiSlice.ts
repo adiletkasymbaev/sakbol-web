@@ -8,7 +8,7 @@ import type { RootState } from "./store"
 import { setCredentials, logOut } from "../features/auth/authSlice"
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://ajireto.pythonanywhere.com/api",
+  baseUrl: "https://sakbol.app/api",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
     if (token) {
