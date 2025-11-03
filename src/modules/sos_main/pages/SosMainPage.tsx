@@ -18,7 +18,7 @@ function SosMainPage() {
     const [zoom, setZoom] = useState(12)
 
     useEffect(() => {
-        const handler = (lat: number, lon: number) => setTargetPosition({ lat, lon });
+        const handler = (lat: number, lon: number) => setTargetPosition([lat, lon]);
         window.onLocationUpdate = handler;
         return () => { delete window.onLocationUpdate; };
     }, []);
