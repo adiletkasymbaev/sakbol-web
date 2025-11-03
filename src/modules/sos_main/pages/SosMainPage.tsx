@@ -17,11 +17,17 @@ function SosMainPage() {
     const [isFocused, setFocused] = useState(false)
     const [zoom, setZoom] = useState(12)
 
+    useEffect(() => {
+        const handler = (lat: number, lon: number) => setTargetPosition({ lat, lon });
+        window.onLocationUpdate = handler;
+        return () => { delete window.onLocationUpdate; };
+    }, []);
+
     const content = (
         <div className="page-wrapper-no-padding">
             <Map zoom={zoom} setZoom={setZoom} targetPosition={targetPosition} userPosition={userPosition}/>
 
-            <LocationUpdater isFocused={isFocused} setTargetPosition={setTargetPosition} setUserPosition={setUserPosition}/>
+            {/* <LocationUpdater isFocused={isFocused} setTargetPosition={setTargetPosition} setUserPosition={setUserPosition}/> */}
 
             <BottomSheet onClick={() => setTargetPosition(userPosition)}>
                 <Heading variant="card">
