@@ -9,6 +9,8 @@ import Navbar from "../../../shared/components/Navbar";
 import RenderWithSpinner from "../../../shared/components/RenderWithSpinner";
 import Map from '../components/Map';
 import LocationUpdater from "../../../shared/components/LocationUpdater";
+import { addToast } from "@heroui/react";
+import { ToastTypes } from "../../../shared/enums/ToastTypes";
 
 function SosMainPage() {
     const { data: favoriteContacts, isLoading } = useGetFavoritesQuery()
@@ -24,6 +26,27 @@ function SosMainPage() {
         };
         window.onLocationUpdate = handler;
         return () => { delete window.onLocationUpdate; };
+    }, []);
+
+    useEffect(() => {
+        window.onVoskResult = (hyp) => {
+        try {
+            const obj = typeof hyp === 'string' ? JSON.parse(hyp) : hyp;
+            const text = obj?.text?.trim?.();
+            if (!text) return;
+
+            const words = text.toLowerCase().split(/\s+/).filter(Boolean);
+            const signal = words.length >= 3 ? 'B' : 'A';
+
+            addToast({
+                title: ToastTypes.OK,
+                description: '[VOSK] final: ' + text + ' → ' + signal,
+                color: "success",
+            });
+        } catch (e) {
+            console.error('[VOSK] bad hypothesis:', hyp, e);
+        }
+        };
     }, []);
 
     const content = (
