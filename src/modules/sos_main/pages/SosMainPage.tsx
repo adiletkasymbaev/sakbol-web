@@ -29,23 +29,16 @@ function SosMainPage() {
     }, []);
 
     useEffect(() => {
-        window.onVoskResult = (hyp) => {
-        try {
-            const obj = typeof hyp === 'string' ? JSON.parse(hyp) : hyp;
-            const text = obj?.text?.trim?.();
-            if (!text) return;
-
-            const words = text.toLowerCase().split(/\s+/).filter(Boolean);
-            const signal = words.length >= 3 ? 'B' : 'A';
-
-            addToast({
-                title: ToastTypes.OK,
-                description: '[VOSK] final: ' + text + ' → ' + signal,
-                color: "success",
-            });
-        } catch (e) {
-            console.error('[VOSK] bad hypothesis:', hyp, e);
-        }
+        window.onHotword = () => {
+            try {
+                addToast({
+                    title: ToastTypes.OK,
+                    description: "Вы произнесли ключевое слово",
+                    color: "success",
+                });
+            } catch (e) {
+                console.error('bad hypothesis');
+            }
         };
     }, []);
 
