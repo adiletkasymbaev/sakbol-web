@@ -22,10 +22,6 @@ function SosMainPage() {
             <Map zoom={zoom} setZoom={setZoom} targetPosition={targetPosition} userPosition={userPosition}/>
 
             <LocationUpdater isFocused={isFocused} setTargetPosition={setTargetPosition} setUserPosition={setUserPosition}/>
-            
-            <div className="absolute">
-                Button
-            </div>
 
             <BottomSheet onClick={() => setTargetPosition(userPosition)}>
                 <Heading variant="card">

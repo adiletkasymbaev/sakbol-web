@@ -12,7 +12,7 @@ function CustomMarker({ position, avatar }: ComponentProps) {
     html: `
     <div style="position: relative; width: 81px; height: 93px;">
         <div style="position: absolute; top: -72px; left: 10%; transform: translateX(-50%); z-index: 9999; width: 63px; height: 63px; overflow: hidden; border-radius: 100%; border: 3px solid var(--color-primary); display: flex; justify-content: center; align-items: center;">
-            ${avatar?.length > 0 ? '<img src="' + avatar + '" alt="Avatar" style="width: 100%;">' : '<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-weight: 700; font-size: 18px;">ВЫ</div>' }
+            ${avatar?.length > 0 ? '<img src="' + avatar + '" alt="Avatar" style="width: 100%;">' : '<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-weight: 700; font-size: 18px; line-height: 1.0; text-align: center;">Нет фото</div>' }
         </div>
         <img src="images/marker.png" alt="Marker" style="position: absolute; top: -80px; left: -32px; z-index: 9998;">
     </div>
