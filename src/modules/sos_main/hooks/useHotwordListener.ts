@@ -1,7 +1,7 @@
-// @ts-nocheck
 import { useEffect } from "react";
 import { addToast } from "@heroui/react";
 import { ToastTypes } from "../../../shared/enums/ToastTypes";
+import { useCreateSosSignalMutation } from "../../../features/sos/sosApiSlice";
 
 /**
  * Хук слушает window.onHotword (например, из Android WebView)
