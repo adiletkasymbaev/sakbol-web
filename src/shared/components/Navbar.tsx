@@ -35,7 +35,7 @@ function Navbar() {
 
   const handleSendSos = async () => {
     try {
-      await createSosSignal({ latitude: lat, longitude: lon }).unwrap();
+      await createSosSignal({ latitude: lat, longitude: lon, type: "emergency" }).unwrap();
       addToast({
         title: "Экстренный СОС-сигнал",
         description: "Сигнал отправлен ближайшим мед. учреждениям",
@@ -52,13 +52,13 @@ function Navbar() {
     }
   };
 
-  const handleTripleClick = () => {
+  const handleTripleClick = async () => {
     addToast({
       title: "СОС-сигнал",
       description: "Сигнал отправлен вашим избранным контактам",
       color: "warning",
     });
-
+    await createSosSignal({ latitude: lat, longitude: lon, type: "regular" }).unwrap();
     setProgress(100);
     window.setTimeout(() => setProgress(0), 300);
   };
