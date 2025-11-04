@@ -1,13 +1,11 @@
-import { Button } from "@heroui/react";
 import React, { useState, useRef, useEffect } from "react";
-import IconMapPin from "../../../shared/icons/IconMapPin";
+import MyLocationButton from "./MyLocationButton";
 
 interface ComponentProps {
   children: React.ReactNode;
-  onClick?: () => void;
 }
 
-export default function BottomSheet({ children, onClick = () => {} }: ComponentProps) {
+export default function BottomSheet({ children }: ComponentProps) {
   const [open, setOpen] = useState(false);
   const [height, setHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -39,13 +37,7 @@ export default function BottomSheet({ children, onClick = () => {} }: ComponentP
       {/* Кнопка управления */}
       <div className="flex justify-center">
         <div className="bg-white w-full h-3 relative">
-          <Button 
-            onClick={onClick}
-            isIconOnly 
-            className="size-14 bg-primary rounded-full shadow-2xl absolute -top-16 left-2"
-          >
-            <IconMapPin className="text-secondary"/>
-          </Button>
+          <MyLocationButton/>
           
           <img
             className={`absolute right-6 -top-2 cursor-pointer transition-transform duration-300 ${

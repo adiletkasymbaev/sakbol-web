@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGetFavoritesQuery } from "../../../features/contacts/favoritesApi";
 import BottomSheet from "../components/BottomSheet";
 import ContactItem from "../../../shared/components/ContactItem";
@@ -8,61 +7,52 @@ import Margin from "../../../shared/components/Margin";
 import Navbar from "../../../shared/components/Navbar";
 import RenderWithSpinner from "../../../shared/components/RenderWithSpinner";
 import Map from '../components/Map';
-import LocationUpdater from "../../../shared/components/LocationUpdater";
-import { addToast } from "@heroui/react";
-import { ToastTypes } from "../../../shared/enums/ToastTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { selectFavoriteContacts, setFavoriteContacts, setTargetLocation } from "../../../features/sos/presenceSlice";
+import { useHotwordListener } from "../hooks/useHotwordListener";
+import { useSyncLocation } from "../hooks/useSyncLocation";
+import type { FavoriteContact } from "../../../shared/types/favorites";
+import { selectAccessToken } from "../../../features/auth/authSlice";
+import { useLocationSocket } from "../hooks/useLocationSocket";
 
 function SosMainPage() {
-    const { data: favoriteContacts, isLoading } = useGetFavoritesQuery()
-    const [targetPosition, setTargetPosition] = useState<[number, number]>([42.85903549194336, 74.58454132080078]);
-    const [userPosition, setUserPosition] = useState<[number, number]>([42.85903549194336, 74.58454132080078]);
-    const [isFocused, setFocused] = useState(false)
-    const [zoom, setZoom] = useState(12)
-
+    const dispatch = useDispatch();
+    const { data, isLoading, isSuccess } = useGetFavoritesQuery();
     useEffect(() => {
-        const handler = (lat: number, lon: number) => {
-            setTargetPosition([lat, lon])
-            setUserPosition([lat, lon])
-        };
-        window.onLocationUpdate = handler;
-        return () => { delete window.onLocationUpdate; };
-    }, []);
+    if (isSuccess && data?.results) {
+        dispatch(setFavoriteContacts(data.results));
+    } else {
+        dispatch(setFavoriteContacts([]))
+    }
+    }, [isSuccess, data, dispatch]);
+    const favoriteContacts = useSelector(selectFavoriteContacts);
 
-    useEffect(() => {
-        window.onHotword = () => {
-            try {
-                addToast({
-                    title: ToastTypes.OK,
-                    description: "Вы произнесли ключевое слово",
-                    color: "success",
-                });
-            } catch (e) {
-                console.error('bad hypothesis');
-            }
-        };
-    }, []);
+    const handleMyLocation = (contact: FavoriteContact) => {
+        dispatch(setTargetLocation({ lat: contact.location.latitude, lon: contact.location.longitude }));
+    };
+
+    // const accessToken = useSelector(selectAccessToken);
+    // useLocationSocket("ws://127.0.0.1:8000/ws/location/", accessToken!);
+    // useLocationSocket("wss://sakbol.app/ws/location/", accessToken!);
+    useSyncLocation()
+    useHotwordListener()
 
     const content = (
         <div className="page-wrapper-no-padding">
-            <Map zoom={zoom} setZoom={setZoom} targetPosition={targetPosition} userPosition={userPosition}/>
+            <Map/>
 
-            {/* <LocationUpdater isFocused={isFocused} setTargetPosition={setTargetPosition} setUserPosition={setUserPosition}/> */}
-
-            <BottomSheet onClick={() => setTargetPosition(userPosition)}>
+            <BottomSheet>
                 <Heading variant="card">
                     Ваши контакты
                 </Heading>
                 <Margin direction="b" value={2}/>
-                <RenderWithSpinner isLoading={isLoading} isEmpty={favoriteContacts?.count === 0} emptyText="Нет избранных контактов">
+                <RenderWithSpinner isLoading={isLoading} isEmpty={favoriteContacts.length === 0} emptyText="Нет избранных контактов">
                     <div className="flex flex-col gap-2">
-                        {favoriteContacts?.results?.map(favorite => (
+                        {favoriteContacts?.map(favorite => (
                             <ContactItem 
                                 key={favorite.id}
                                 contact={favorite.contact} 
-                                onClick={() => {
-                                    setTargetPosition([favorite?.location?.latitude, favorite?.location?.longitude])
-                                    setFocused(true)
-                                }} 
+                                onClick={() => handleMyLocation(favorite)} 
                             />
                         ))}
                     </div>

@@ -28,9 +28,9 @@ function ContactItem({ contact, onClick = () => {}, variant = "map", isLoading =
                 </div>
                     <div className="flex flex-col justify-center gap-1">
                         <p className="font-medium text-black text-sm">{contact.first_name} {contact.last_name}</p>
-                        {(variant !== "request-in" && variant !== "request-out") &&
+                        {/* {(variant !== "request-in" && variant !== "request-out") &&
                             <ConnectionStatus isOnline={contact.is_online} lastOnline={contact.last_seen_display} />
-                        }
+                        } */}
                     </div>
             </div>
             {variant === "map" &&

@@ -8,8 +8,8 @@ import type { RootState } from "./store"
 import { setCredentials, logOut } from "../features/auth/authSlice"
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://sakbol.app/api",
-  // baseUrl: "http://127.0.0.1:8000/api",
+  // baseUrl: "https://sakbol.app/api",
+  baseUrl: "http://127.0.0.1:8000/api",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken
     if (token) {

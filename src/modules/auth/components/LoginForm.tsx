@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Input, Button, addToast } from "@heroui/react";
@@ -35,6 +34,10 @@ function LoginForm() {
         try {
             const userData = await login({ email: values.email, password: values.password }).unwrap()
             dispatch(setCredentials({ accessToken: userData.access, user: {email: values.email} }))
+            if (window?.AndroidBridge?.setAccessToken) {
+                AndroidBridge.setAccessToken(userData.access);
+            }
+
             navigate(UrlNames.MAIN)
         } catch (err) {
             let errorMessage = ""
