@@ -32,8 +32,6 @@ export function useHotwordListener() {
       }
     };
 
-    window.onHotword()
-
     return () => {
       delete window.onHotword;
     };
