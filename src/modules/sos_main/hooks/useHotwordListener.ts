@@ -8,12 +8,18 @@ import { ToastTypes } from "../../../shared/enums/ToastTypes";
  * и показывает тост при срабатывании голосового ключевого слова.
  */
 export function useHotwordListener() {
+  const [createSosSignal] = useCreateSosSignalMutation();
+
   useEffect(() => {
     window.onHotword = () => {
       try {
+        async function action() {
+          await createSosSignal({ latitude: lat, longitude: lon }).unwrap();
+        }
+        action()
         addToast({
-          title: ToastTypes.OK,
-          description: "Вы произнесли ключевое слово",
+          title: ToastTypes.ERR,
+          description: "Вы произнесли ключевое слово. Сос-сигнал вызван.",
           color: "success",
         });
       } catch (e) {
