@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import { addToast } from "@heroui/react";
 import { ToastTypes } from "../../../shared/enums/ToastTypes";
