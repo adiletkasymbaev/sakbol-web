@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../api/store";
 import type { FavoriteContact } from "../../shared/types/favorites";

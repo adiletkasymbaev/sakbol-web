@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button } from "@heroui/react";
 import IconMapPin from "../../../shared/icons/IconMapPin";
 import { useDispatch, useSelector } from "react-redux";

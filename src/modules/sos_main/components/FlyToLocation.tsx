@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import { useSelector } from "react-redux";

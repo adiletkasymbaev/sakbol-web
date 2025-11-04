@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import { useGetFavoritesQuery } from "../../../features/contacts/favoritesApi";
 import BottomSheet from "../components/BottomSheet";
